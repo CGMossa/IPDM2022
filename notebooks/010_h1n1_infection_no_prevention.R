@@ -14,7 +14,7 @@ disease_status_collect <- list(
 )
 
 
-farm_small$add_infected_pig()
+farm_small$add_infected_pig(10)
 farm_big$add_infected_pig()
 for (t in seq_len(end_time)) {
   farm_small$update_daily()
