@@ -6,8 +6,8 @@ devtools::load_all(".")
 #' 
 
 end_time <- 1 * 365
-farm_small <- Farm$new(n_pigs = 55, transmission_rate = 0.401)
-farm_big <- Farm$new(n_pigs = 356, transmission_rate = 0.401)
+farm_small <- Farm$new(n_pigs = 55)
+farm_big <- Farm$new(n_pigs = 356)
 disease_status_collect <- list(
   farm_small = vector(mode = "list", end_time),
   farm_big = vector(mode = "list", end_time)
@@ -33,7 +33,7 @@ disease_status_collect %>%
   unnest(value) %>% 
   unnest_wider(value) %>% 
   
-  pivot_longer(c(susceptible, infected, recovered),
+  pivot_longer(c(susceptible, exposed, infectious, recovered),
                names_to = "compartment",
                values_to = "count") %>%
   glimpse() %>%
