@@ -9,7 +9,9 @@ Farm <- R6Class(
                           # no assymptomatic
                           rate_sus_to_expo = 0.400,
                           rate_expo_to_infect = (1 / 2.62),
-                          rate_infect_to_recovered = 1 / 3.38
+                          rate_infect_to_recovered = 1 / 3.38,
+                          vaccination = FALSE,
+                          intervention = FALSE
                           # 
                           # rate_sus_to_expo = 0.400,
                           # rate_expo_to_infect = (1 - 0.398) * (1 / 2.62),
@@ -19,12 +21,22 @@ Farm <- R6Class(
     ) {
       private$time_counter <- 0
       private$n_pigs <- n_pigs
+      private$intervention <- intervention
       #' all are susceptible in the beginning
       private$infected_status <- numeric(n_pigs)
-      private$rate_sus_to_expo <- rate_sus_to_expo
+      if (vaccination) {
+        private$rate_sus_to_expo <- rate_sus_to_expo / 2.
+      } else {
+        private$rate_sus_to_expo <- rate_sus_to_expo
+      }
+      
       private$rate_expo_to_infect <- rate_expo_to_infect
       private$rate_infect_to_recovered <- rate_infect_to_recovered
     },
+    
+    # n_pigs = function() {
+    #   private$n_pigs
+    # },
     
     add_infected_pig = function(total_infected = 1) {
       stopifnot("no pigs are available for infection" = private$n_pigs >= total_infected)
@@ -34,7 +46,7 @@ Farm <- R6Class(
     update_daily = function(rate_remove_clinical = 0.70) {
       self$update_disease_status();
       # intervene on a weekly basis
-      if (private$time_counter %% 7 == 0) {
+      if (private$intervention & (private$time_counter %% 7 == 0))  {
         self$update_intervention(rate_remove_clinical);
         
       }
@@ -74,14 +86,14 @@ Farm <- R6Class(
       
     },
     disease_status = function() {
-      disease_status = c(
+      disease_status = list(
         susceptible = sum(private$infected_status == 0),
         exposed = sum(private$infected_status == 1),
         infectious = sum(private$infected_status == 2),
         recovered = sum(private$infected_status == 3)
       )
       stopifnot("compartments no longer make sense" = 
-                  sum(disease_status) == private$n_pigs)
+                  sum(unlist(disease_status)) == private$n_pigs)
       disease_status
     }
   ),
@@ -91,6 +103,7 @@ Farm <- R6Class(
     rate_expo_to_infect = numeric(1),
     rate_infect_to_recovered = numeric(1),
     infected_status = numeric(0),
-    time_counter = integer(0)
+    time_counter = integer(0),
+    intervention = logical(0)
   )
 )

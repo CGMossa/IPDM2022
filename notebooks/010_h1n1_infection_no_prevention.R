@@ -6,8 +6,8 @@ devtools::load_all(".")
 #' 
 
 end_time <- 1 * 365
-farm_small <- Farm$new(n_pigs = 55)
-farm_big <- Farm$new(n_pigs = 356)
+farm_small <- Farm$new(n_pigs = 55, vaccination = TRUE)
+farm_big <- Farm$new(n_pigs = 356, vaccination = TRUE)
 disease_status_collect <- list(
   farm_small = vector(mode = "list", end_time),
   farm_big = vector(mode = "list", end_time)
