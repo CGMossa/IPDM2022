@@ -77,7 +77,7 @@ Farm <- R6::R6Class(
     reset = function() {
       private$time_counter <- 0
       #' all are susceptible in the beginning
-      private$infected_status <- numeric(n_pigs)
+      private$infected_status <- 0
     },
     #' Returns current counts of the disease compartments
     disease_status = function() {
