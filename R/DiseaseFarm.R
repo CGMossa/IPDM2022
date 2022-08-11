@@ -1,6 +1,6 @@
 #' Parameter [source](https://www.sciencedirect.com/science/article/pii/S1201971212013112)
-Farm <- R6::R6Class(
-  classname = "Farm",
+DiseaseFarm <- R6::R6Class(
+  classname = "DiseaseFarm",
   public = list(
     initialize = function(n_pigs, 
                           rate_sus_to_expo = 0.400,
@@ -77,7 +77,8 @@ Farm <- R6::R6Class(
     reset = function() {
       private$time_counter <- 0
       #' all are susceptible in the beginning
-      private$infected_status <- 0
+      private$infected_status[] <- 0
+      
     },
     #' Returns current counts of the disease compartments
     disease_status = function() {
