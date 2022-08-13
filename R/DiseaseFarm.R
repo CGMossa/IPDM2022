@@ -46,11 +46,10 @@ DiseaseFarm <- R6::R6Class(
     #' Internally updates the delta-updates. Remember to call `apply` after this.
     update_disease_status = function() {
       # how many susceptible become infected
-      total_infected <- sum(private$infected_status == 1 |
+      total_infectious <- sum(private$infected_status == 1 |
                               private$infected_status == 2)
-      
       sus_to_exposed_rate <- 1 - exp(-private$rate_sus_to_expo * 
-                                       total_infected / private$n_pigs)
+                                       total_infectious / private$n_pigs)
       which_susceptible <- which(private$infected_status == 0)
       sus_to_expo <- rbinom(length(which_susceptible), size = 1, prob = sus_to_exposed_rate) == 1
       
