@@ -2,9 +2,11 @@ library(tidyverse)
 devtools::load_all(".")
 #' Investigating the affect of increased herd sizes in pig productions in Italy
 #' from 55 pigs to 365 pigs.
-#' 
-repetitions <- 250
+set.seed(202)
+# repetitions <- 1
+repetitions <- 1000
 expand_grid(
+  repetitions = repetitions,
   end_time = 1 * 365,
   vaccination = c(FALSE, TRUE),
   intervention = c(FALSE, TRUE),
@@ -29,12 +31,11 @@ scenario_config_df %>%
   mutate(results = {
     result <- list(time_of_outbreak = NA, total_infected_animals = NA)
     
-    farm <- Farm$new(n_pigs = n_pigs, vaccination = vaccination)
+    farm <- DiseaseFarm$new(n_pigs = n_pigs, vaccination = vaccination)
     farm$add_infected_pig(1)
     for (t in seq_len(end_time)) {
       farm$update_daily()
       status <- farm$disease_status()
-      # browser()
       total_infected <- status$exposed + status$infectious
       if (total_infected == 0) {
         result$time_of_outbreak <- t
@@ -71,7 +72,7 @@ scenario_desc_df %>%
   mutate(results = {
     # result <- list(time_of_outbreak = NA, total_infected_animals = NA)
     result <- list()
-    farm <- Farm$new(n_pigs = n_pigs, vaccination = vaccination)
+    farm <- DiseaseFarm$new(n_pigs = n_pigs, vaccination = vaccination)
       # browser()
     farm$add_infected_pig(1)
     for (t in seq_len(end_time)) {
