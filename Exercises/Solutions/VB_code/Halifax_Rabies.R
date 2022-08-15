@@ -16,7 +16,7 @@
 # Note: Is the pattern of the outbreaks what you would expect in a small community of dogs?
 
 
-library(RGeode)
+library(RGeode) # truncate distribution 
 
 #set.seed(250)
 
@@ -100,11 +100,9 @@ for (k in 1:end.time)
   # lambda = c * v * I/N   c = prob contact (k* N/A), v = prob infection, I/N = probability that a given contact is with an infected individual 
   # lambda = k * v * I    K is the coefficient of the slope
   
-  # ProbInfection <- DensityCoeff * Pbite * PInf * (length(community$state[community$state==2]))  
- 
-  # ProbInfection <- 1-exp(-DensityCoeff * Pbite * PInf*(length(community$state[community$state==2])))
+  # ProbInfection <- FrequencyContacts * Pbite * PInf * (length(community$state[community$state==2])/n.dogs)  
   # ProbInfection <- 1- (1- (DensityCoeff * Pbite * PInf))^ (length(community$state[community$state==2]))  
-  
+    
   
   # Frequency transmission
   # risk of infection = lambda
@@ -112,9 +110,7 @@ for (k in 1:end.time)
   # lambda = c' * v * I/N   c = prob contact (n + 0*N/A), v = prob infection, I/N = probability that a given contact is with an infected individual 
   # lambda = n * v * I/N    n is the number of contacts/time step
   
-  #ProbInfection <- FrequencyContacts * Pbite * PInf * (length(community$state[community$state==2])/n.dogs)  
-  
-  #ProbInfection <- 1-exp(-FrequencyContacts * Pbite * PInf*(length(community$state[community$state==2]) / n.dogs))
+  #ProbInfection <- FrequencyContacts * Pbite * PInf * (length(community$state[community$state==2])/n.dogs)    
   ProbInfection <- 1- (1- (FrequencyContacts * Pbite * PInf))^ (length(community$state[community$state==2])/n.dogs)  
   
   
